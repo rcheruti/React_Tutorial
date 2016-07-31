@@ -1,0 +1,19 @@
+{
+  "name": "React_Tutorial",
+  "version": "1.0.0",
+  "keywords": [
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "author": "Rafael",
+  "contributors": [],
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-react": "^6.11.1",
+    "grunt": "^1.0.1",
+    "grunt-babel": "^6.0.0"
+  }
+}
