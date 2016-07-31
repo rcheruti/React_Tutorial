@@ -1,8 +1,35 @@
 
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
 var CommentBox = React.createClass({
   displayName: "CommentBox",
 
+  getInitialState: function () {
+    return { items: [] };
+  },
+  addItem: function (msg) {
+    this.state.items.push(msg);
+    this.setState({ items: this.state.items });
+  },
+  removeItem: function (idx) {
+    this.state.items.splice(idx, 1);
+    this.setState({ items: this.state.items });
+  },
   render: function () {
+    var items = this.state.items.map(function (item, i) {
+      return React.createElement(
+        "div",
+        { key: item },
+        React.createElement(
+          "div",
+          { className: "xBtn",
+            onClick: this.removeItem.bind(this, i) },
+          "X"
+        ),
+        item
+      );
+    }.bind(this));
+
     return React.createElement(
       "div",
       { className: "commentBox" },
@@ -12,7 +39,16 @@ var CommentBox = React.createClass({
         "Comentários"
       ),
       React.createElement(CommentList, { nome: "Maria" }),
-      React.createElement(CommentForm, null)
+      React.createElement(CommentForm, { onAddItem: this.addItem }),
+      React.createElement(
+        "div",
+        null,
+        React.createElement(
+          ReactCSSTransitionGroup,
+          { transitionName: "example", transitionEnterTimeout: 500, transitionLeaveTimeout: 300 },
+          items
+        )
+      )
     );
   }
 });
@@ -45,6 +81,9 @@ var CommentForm = React.createClass({
   },
   click: function (ev) {
     ev.preventDefault();
+    if (this.props.onAddItem) {
+      this.props.onAddItem(this.state.msg);
+    }
     this.setState({ msg: '' });
   },
   render: function () {
